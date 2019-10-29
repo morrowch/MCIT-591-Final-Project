@@ -6,9 +6,9 @@ public class Stone {
 	private Intersection intersection;
 	private Group group;
 	
-	public Stone(Color color, int x, int y) {
+	public Stone(Color color, int x, int y, Board board) {
 		this.color = color;
-		this.intersection = new Intersection(x, y);
+		intersection = board.getIntersections()[x][y];
 	}
 	
 	public ArrayList<Intersection> getAdjacentIntersections(Board board) {
@@ -17,13 +17,13 @@ public class Stone {
 		if (intersection.getxPosition() > 0) {
 			adjacentIntersections.add(board.getIntersections()[intersection.getxPosition() - 1][intersection.getyPosition()]);
 		}
-		if (intersection.getxPosition() < board.getSize()) {
+		if (intersection.getxPosition() < board.getSize() - 1) {
 			adjacentIntersections.add(board.getIntersections()[intersection.getxPosition() + 1][intersection.getyPosition()]);
 		}
 		if (intersection.getyPosition() > 0) {
 			adjacentIntersections.add(board.getIntersections()[intersection.getxPosition()][intersection.getyPosition() - 1]);
 		}
-		if (intersection.getyPosition() < board.getSize()) {
+		if (intersection.getyPosition() < board.getSize() - 1) {
 			adjacentIntersections.add(board.getIntersections()[intersection.getxPosition()][intersection.getyPosition() + 1]);
 		}
 		

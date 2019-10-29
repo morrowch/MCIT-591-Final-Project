@@ -41,7 +41,7 @@ public class Board {
 			System.out.println("Stone is already at that location");
 		}
 			
-		Stone stone = new Stone(color, x, y); 	// Create a new stone with given color and location
+		Stone stone = new Stone(color, x, y, this); 	// Create a new stone with given color and location
 		stones.add(stone);						// Update stone
 		intersections[x][y].setStone(stone); 	// Update that board location
 		updateGroups(stone);
@@ -86,6 +86,7 @@ public class Board {
 					for (Stone capturedStone : adjacentStone.getGroup().getStones()) {
 						capturedStone.getIntersection().setStone(null);
 						stones.remove(capturedStone);
+						System.out.println(capturedStone.getColor() + " stone has been captured at " + capturedStone.getIntersection().getxPosition() + "," + capturedStone.getIntersection().getyPosition());
 					}
 					
 					groups.remove(adjacentStone.getGroup());
@@ -143,6 +144,10 @@ public class Board {
 
 	public ArrayList<Group> getGroups() {
 		return groups;
+	}
+	
+	public ArrayList<Stone> getStones() {
+		return stones;
 	}
 
 	public int getCapturedWhiteStones() {
