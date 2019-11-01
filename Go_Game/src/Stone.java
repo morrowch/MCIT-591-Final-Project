@@ -11,6 +11,11 @@ public class Stone {
 		intersection = board.getIntersections()[x][y];
 	}
 	
+	/**
+	 * Finds the intersections that are adjacent to the board
+	 * @param board
+	 * @return
+	 */
 	public ArrayList<Intersection> getAdjacentIntersections(Board board) {
 		ArrayList<Intersection> adjacentIntersections = new ArrayList<Intersection>();
 		

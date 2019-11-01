@@ -3,8 +3,11 @@ import java.util.ArrayList;
 public class Group {
 	
 	private Color color;
-	private ArrayList<Intersection> liberties;
-	private ArrayList<Stone> stones;
+	private ArrayList<Stone> stones = new ArrayList<Stone>();
+	
+	public Group() {
+		
+	}
 	
 	public Group(Stone stone) {
 		color = stone.getColor();
@@ -33,40 +36,30 @@ public class Group {
 	}
 	
 	/**
-	 * Checks whether a group is captured by checking whether it has at least one open liberty
-	 * @return
-	 */
-	public Boolean isCaptured() {
-		Boolean isCaptured = true;
-		for (Intersection liberty : liberties) {
-			if (liberty.getStone() == null) {
-				isCaptured = false; // If at least one liberty is free, the group is still alive
-			}
-		}
-		return isCaptured;
-	}
-	
-	/**
-	 * Re-finds all liberties for a group. A liberty is any intersection adjacent to a stone that isn't occupied by a stone of the same color
-	 * I'm counting adjacent intersections occupied by opposing stones as valid liberties--just ones that aren't counted when determining when
-	 * the group is captured
+	 * Finds all liberties for a group. A liberty is any open intersection adjacent to a group
 	 * @param board
 	 */
-	public void updateLiberties(Board board) {
-		liberties = new ArrayList<Intersection>();
+	public ArrayList<Intersection> getLiberties(Board board) {
+		ArrayList<Intersection> liberties = new ArrayList<Intersection>();
 		
 		for (Stone stone : stones) { 
 			for (Intersection intersection : stone.getAdjacentIntersections(board)) {
-				if ( (intersection.getStone() == null || intersection.getStone().getColor() != color) && !liberties.contains(intersection)) {
+				if ( (intersection.getStone() == null) && !liberties.contains(intersection)) {
 					liberties.add(intersection);
 				}
 			}
 		}
 		
+		return liberties;
+		
 	}
 	
 	public ArrayList<Stone> getStones() {
 		return stones;
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 
 }
