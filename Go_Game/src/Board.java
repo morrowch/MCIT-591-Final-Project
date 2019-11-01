@@ -10,7 +10,7 @@ public class Board {
 	private int capturedBlackStones;
 	private int size;
 	private ArrayList<String> boardPositions; // Keeps a record of the game position after each move
-	
+
 	public String NO_LIBERTIES_MESSAGE = "Placed stone has no liberties";
 	public String KO_MESSAGE = "Move violates rule of Ko";
 
@@ -52,7 +52,7 @@ public class Board {
 		intersections[x][y].setStone(placedStone); 			// Update that board location
 		Group placedStoneGroup = new Group(placedStone);
 		placedStone.setGroup(placedStoneGroup);
-		
+
 		ArrayList<Group> mergedGroups = new ArrayList<Group>();
 		ArrayList<Group> capturedGroups = new ArrayList<Group>();
 
@@ -62,7 +62,7 @@ public class Board {
 		catch(IllegalArgumentException e) {
 			throw e;
 		}
-		
+
 		updateBoard(placedStone, placedStoneGroup, mergedGroups, capturedGroups);
 
 	}
@@ -75,7 +75,7 @@ public class Board {
 	 * @param capturedGroups
 	 */
 	public void validateMove(Stone placedStone, Group placedStoneGroup, ArrayList<Group> mergedGroups, ArrayList<Group> capturedGroups) {
-		
+
 		Boolean groupIsCaptured = false;
 
 		for (Intersection intersection : placedStone.getAdjacentIntersections(this)) {			
@@ -97,7 +97,7 @@ public class Board {
 				}
 			}
 		}
-		
+
 		Group validateGroup = new Group(placedStone);
 		for (Group mergedGroup : mergedGroups) {
 			validateGroup.addGroup(mergedGroup);
@@ -110,9 +110,9 @@ public class Board {
 			stones.remove(placedStone);
 			throw new IllegalArgumentException(NO_LIBERTIES_MESSAGE);
 		}
-		
+
 		// Check if Ko is violated:
-		
+
 		String boardPosition = "";
 		ArrayList<Stone> capturedStones = new ArrayList<Stone>();
 		for (Group capturedGroup : capturedGroups) {
@@ -122,7 +122,7 @@ public class Board {
 				}
 			}
 		}
-		
+
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
 				if ((intersections[x][y].getStone() == null) || capturedStones.contains(intersections[x][y].getStone())) {
