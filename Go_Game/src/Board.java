@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Board {
@@ -8,7 +9,10 @@ public class Board {
 	private int capturedWhiteStones;
 	private int capturedBlackStones;
 	private int size;
-	private ArrayList<String> boardPositions; // Keeps a record of the game position after each move 
+	private ArrayList<String> boardPositions; // Keeps a record of the game position after each move
+	
+	public String NO_LIBERTIES_MESSAGE = "Placed stone has no liberties";
+	public String KO_MESSAGE = "Move violates rule of Ko";
 
 	public Board(int size) {
 		this.size = size;
@@ -52,7 +56,12 @@ public class Board {
 		ArrayList<Group> mergedGroups = new ArrayList<Group>();
 		ArrayList<Group> capturedGroups = new ArrayList<Group>();
 
-		validateMove(placedStone, placedStoneGroup, mergedGroups, capturedGroups);
+		try {
+			validateMove(placedStone, placedStoneGroup, mergedGroups, capturedGroups);
+		}
+		catch(IllegalArgumentException e) {
+			throw e;
+		}
 		
 		updateBoard(placedStone, placedStoneGroup, mergedGroups, capturedGroups);
 
@@ -88,13 +97,18 @@ public class Board {
 				}
 			}
 		}
+		
+		Group validateGroup = new Group(placedStone);
+		for (Group mergedGroup : mergedGroups) {
+			validateGroup.addGroup(mergedGroup);
+		}
 
-		if (!groupIsCaptured && placedStoneGroup.getLiberties(this).size() == 0) {
+		if (!groupIsCaptured && validateGroup.getLiberties(this).size() == 0) {
 			// Remove placed stone, update liberties again
 			placedStoneGroup.getStones().remove(placedStone);
 			placedStone.getIntersection().setStone(null);
 			stones.remove(placedStone);
-			throw new IllegalArgumentException("Placed stone does not have any liberties");
+			throw new IllegalArgumentException(NO_LIBERTIES_MESSAGE);
 		}
 		
 		// Check if Ko is violated:
@@ -125,11 +139,10 @@ public class Board {
 			placedStoneGroup.getStones().remove(placedStone);
 			placedStone.getIntersection().setStone(null);
 			stones.remove(placedStone);
-			throw new IllegalArgumentException("Move violates the rule of Ko");
+			throw new IllegalArgumentException(KO_MESSAGE);
 		}
 
 		boardPositions.add(boardPosition);
-		System.out.println(boardPosition);
 	}
 
 	/*
@@ -151,7 +164,6 @@ public class Board {
 			for (Stone capturedStone : capturedGroup.getStones()) {
 				capturedStone.getIntersection().setStone(null);
 				stones.remove(capturedStone);
-				System.out.println(capturedStone.getColor() + " stone has been captured at " + capturedStone.getIntersection().getxPosition() + "," + capturedStone.getIntersection().getyPosition());
 			}
 
 			groups.remove(capturedGroup);
