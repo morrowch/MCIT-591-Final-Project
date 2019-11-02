@@ -64,6 +64,34 @@ class BoardTest {
 		assertEquals(board.getStones().size(), 5);
 
 	}
+	
+	@Test
+	public void simpleGame() {
+		Board board = new Board(5);
+		
+		board.placeStone(Color.BLACK, 3, 3);
+		board.placeStone(Color.WHITE, 1, 1);
+		board.placeStone(Color.BLACK, 1, 3);
+		board.placeStone(Color.WHITE, 3, 1);
+		board.placeStone(Color.BLACK, 1, 2);
+		board.placeStone(Color.WHITE, 2, 1);
+		board.placeStone(Color.BLACK, 2, 2);
+		board.placeStone(Color.WHITE, 3, 2);
+		board.placeStone(Color.BLACK, 4, 2);
+		board.placeStone(Color.WHITE, 2, 3);
+		board.placeStone(Color.BLACK, 2, 4); // Captures a white stone
+		board.placeStone(Color.WHITE, 4, 1);
+		board.placeStone(Color.BLACK, 4, 3);
+		board.placeStone(Color.WHITE, 0, 2);
+		board.placeStone(Color.BLACK, 0, 3);
+		board.placeStone(Color.WHITE, 0, 1);
+		
+		assertEquals(board.getCapturedBlackStones(), 0);
+		assertEquals(board.getCapturedWhiteStones(), 1);
+		assertEquals(board.getGroups().size(), 4);
+		assertEquals(board.getStones().size(), 15);
+		
+	}
 
 
 
